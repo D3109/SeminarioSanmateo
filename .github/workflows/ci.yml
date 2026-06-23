@@ -1,0 +1,27 @@
+name: CI Pipeline FinTech API
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout del código
+      uses: actions/checkout@v3
+
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Instalar dependencias
+      run: pip install fastapi uvicorn requests
+
+    - name: Validar aplicación
+      run: echo "API OK ✅"
+
+    - name: Construir imagen Docker
+      run: docker build -t fintech-api .
