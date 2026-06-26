@@ -1,13 +1,14 @@
-import requests
 from datetime import datetime
+import shutil
 
-url = "http://localhost:8000/status"
+def run_all_checks():
+    disk = shutil.disk_usage('/')
+    disk_percent = (disk.used / disk.total) * 100
 
-try:
-    response = requests.get(url)
-    estado = response.status_code
-except:
-    estado = "ERROR"
-
-with open("log.txt", "a") as f:
-    f.write(f"{datetime.now()} - Estado: {estado}\n")
+    return {
+        "status": "healthy",
+        "timestamp": datetime.utcnow().isoformat(),
+        "checks": {
+            "disk": round(disk_percent, 2)
+        }
+    }
